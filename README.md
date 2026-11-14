@@ -1,33 +1,31 @@
-<img width="1917" height="976" alt="image" src="https://github.com/user-attachments/assets/7dac444e-a01a-4348-ab67-5e5f766ff850" /># Cybersecurity Lab Environment Setup
-### VirtualBox & Kali Linux | Project Module 1
+<img width="1917" height="976" alt="image" src="https://github.com/user-attachments/assets/7dac444e-a01a-4348-ab67-5e5f766ff850" /># Cybersecurity Lab # Cybersecurity Lab Environment Setup
+### Week 1 – Project Module 1 | Networkwalks Cybersecurity Program
 
 ## 1. Project Overview
 
-This project focuses on designing and deploying a virtual cybersecurity laboratory using Oracle VirtualBox and Kali Linux on a Windows 11 host machine.
+This project involves building a virtual cybersecurity laboratory using Oracle VirtualBox and Kali Linux on a Windows 11 host machine.
 
-The primary objective is to establish a controlled and isolated environment for cybersecurity learning, network analysis, and authorized security testing.
+The objective is to establish a dedicated virtual environment for cybersecurity learning, network configuration, and authorized security testing.
 
-By leveraging virtualization and a dedicated NAT Network, the laboratory provides a foundation for experimenting with cybersecurity tools, conducting network reconnaissance, performing vulnerability assessments, and eventually integrating additional virtual machines as testing targets.
+The laboratory uses a custom NAT Network to provide communication between virtual machines while maintaining internet connectivity. It is designed to be expandable, allowing additional virtual machines to be introduced for future practical exercises.
 
-## 2. Objectives
-
-The main objectives of this project were:
+## 2. Project Objectives
 
 - Install and configure Oracle VirtualBox.
 - Deploy Kali Linux as a virtual machine.
-- Establish a dedicated NAT Network using the `10.0.0.0/24` subnet.
+- Create a dedicated NAT Network using the `10.0.0.0/24` subnet.
 - Configure a static IPv4 address for Kali Linux.
-- Establish internet connectivity and DNS resolution.
-- Configure virtual machine integration features.
-- Enable shared folders for host-to-VM file exchange.
-- Create clean virtual machine snapshots for recovery.
-- Prepare an extensible environment for future cybersecurity exercises.
+- Establish internet connectivity.
+- Enable clipboard sharing and drag-and-drop functionality.
+- Configure a shared folder between the host and virtual machine.
+- Create a clean virtual machine snapshot.
+- Document the configuration process and troubleshooting experience.
 
 ## 3. Lab Architecture
 
-The laboratory consists of a Windows 11 host machine running VirtualBox, with Kali Linux operating as a virtual machine.
+The environment consists of a Windows 11 host machine running Oracle VirtualBox, with Kali Linux deployed as a virtual machine.
 
-A dedicated NAT Network allows virtual machines connected to the same network to communicate with one another while retaining internet connectivity.
+The NAT Network provides a dedicated virtual network for communication between laboratory machines and internet connectivity.
 
 ### Infrastructure Configuration
 
@@ -36,146 +34,204 @@ A dedicated NAT Network allows virtual machines connected to the same network to
 | Host OS | Windows 11 |
 | Hypervisor | Oracle VirtualBox 7.2 |
 | Security VM | Kali Linux 2026.2 |
-| VM Memory | 2048 MB |
+| Host RAM | 8 GB |
+| Processor | Intel Core i5 |
+| Kali VM RAM | 2048 MB |
 | Network Mode | NAT Network |
 | Network Name | NatNetwork |
 | Network Subnet | 10.0.0.0/24 |
-| Kali IP | 10.0.0.2/24 |
+| Kali IP Address | 10.0.0.2/24 |
 | Default Gateway | 10.0.0.1 |
 | DNS Server | 8.8.8.8 |
-| Additional Target | Metasploitable (planned configuration: 10.0.0.3) |
 
-### Network Architecture
+### Network Topology
 
 The laboratory uses the following addressing scheme:
 
-- `10.0.0.1` – Default gateway.
-- `10.0.0.2` – Kali Linux virtual machine.
-- `10.0.0.3` – Planned Metasploitable target machine.
+- Default gateway: 10.0.0.1
+- Kali Linux: 10.0.0.2
+- Future target VM: 10.0.0.3
 
-This architecture provides a foundation for building a multi-machine cybersecurity laboratory.
+The additional target machine is planned for a future extension of the laboratory.
 
+## 4. Implementation Procedure
 
-## 4. Implementation
+### Step 1 – Install 7-Zip
 
-### Step 1 – Installing the Prerequisites
+Installed 7-Zip to extract the Kali Linux virtual machine archive.
 
-Installed 7-Zip to extract the Kali Linux virtual machine archive and Oracle VirtualBox to provide the virtualization infrastructure.
+### Step 2 – Install Oracle VirtualBox
 
-### Step 2 – Configuring the Virtual Network
+Installed Oracle VirtualBox to provide the virtualization environment for running and managing virtual machines.
 
-Created a dedicated NAT Network in VirtualBox with the following parameters:
+### Step 3 – Configure the NAT Network
 
-- Network name: NatNetwork
-- IPv4 prefix: 10.0.0.0/24
-- DHCP: Enabled
-- IPv6: Disabled
+Created a dedicated NAT Network through VirtualBox network settings.
 
-This network serves as the communication infrastructure for the laboratory.
+Configuration:
 
-### Step 3 – Deploying Kali Linux
+| Parameter | Value |
+|---|---|
+| Network Name | NatNetwork |
+| IPv4 Prefix | 10.0.0.0/24 |
+| DHCP | Enabled |
+| IPv6 | Disabled |
+
+This configuration provides the network infrastructure for the laboratory.
+
+**Screenshot:** VirtualBox NAT Network configuration.
+
+### Step 4 – Import Kali Linux
 
 Downloaded the official Kali Linux VirtualBox image and imported it into VirtualBox.
 
 Configured the virtual machine with:
-- 2048 MB of RAM.
-- A network adapter attached to the custom NatNetwork.
-- Intel PRO/1000 MT Desktop network adapter.
 
-### Step 4 – Configuring Network Connectivity
+- Memory allocation: 2048 MB.
+- Network adapter: Adapter 1.
+- Attached to: NAT Network.
+- Network: NatNetwork.
+- Adapter type: Intel PRO/1000 MT Desktop.
 
-Configured Kali Linux with a static IPv4 configuration to ensure consistent network addressing.
+**Screenshot:** Kali Linux virtual machine running in VirtualBox.
+
+### Step 5 – Configure Kali Linux Networking
+
+Configured a static IPv4 address to ensure consistent network addressing.
 
 | Parameter | Value |
 |---|---|
 | IPv4 Address | 10.0.0.2 |
-| Netmask | 255.255.255.0 |
+| Subnet Mask | 255.255.255.0 |
 | Gateway | 10.0.0.1 |
 | DNS | 8.8.8.8 |
-<img width="1917" height="976" alt="image" src="https://github.com/user-attachments/assets/83f17a9f-e0f7-469d-8bb0-965573a23182" />
 
+**Screenshot:** Kali Linux IPv4 configuration.
 
-### Step 5 – Creating a Recovery Snapshot
+### Step 6 – Configure Virtual Machine Integration
 
-Created a clean virtual machine snapshot named:
+The assignment requires the following VirtualBox integration features:
 
-`Kali - Network Setup`
+- Shared clipboard.
+- Drag-and-drop functionality.
+- Shared folders.
 
-This provides a recovery point that can be restored whenever an experiment or configuration change affects the virtual machine.
+The designated shared folder is `/downloads` on the host machine.
+
+**Verification checklist:**
+
+- [ ] Shared clipboard enabled.
+- [ ] Drag-and-drop enabled.
+- [ ] Host `/downloads` folder configured as a shared folder.
+- [ ] Shared folder accessible from Kali Linux.
+
+### Step 7 – Create a Virtual Machine Snapshot
+
+Created a clean snapshot of the Kali Linux virtual machine named:
+
+`Clean Kali - Network Setup`
+
+The snapshot provides a recovery point that can be restored if subsequent experiments or configuration changes affect the environment.
+
+**Screenshot:** VirtualBox snapshot configuration.
 
 ## 5. Network Verification
 
-After completing the configuration, several connectivity checks were performed.
+The following commands are used to validate the laboratory configuration.
 
-| Test | Command |
-|---|---|
-| Verify IP configuration | `ip a` |
-| Test gateway connectivity | `ping 10.0.0.1` |
-| Test internet connectivity | `ping 8.8.8.8` |
-| Verify DNS resolution | `nslookup networkwalks.com` |
-| Verify Nmap installation | `nmap --version` |
-| Test target connectivity | `ping 10.0.0.3` |
+| Test | Command | Expected Result |
+|---|---|---|
+| IP configuration | `ip a` | Configured static IP displayed |
+| Gateway connectivity | `ping 10.0.0.1` | Successful replies |
+| Internet connectivity | `ping 8.8.8.8` | Successful replies |
+| DNS resolution | `nslookup networkwalks.com` | Domain resolves |
+| Nmap installation | `nmap --version` | Version information displayed |
+| Snapshot recovery | Restore snapshot | Previous configuration restored |
 
-These checks help validate the network configuration, internet access, DNS resolution, and readiness for future laboratory exercises.
+These checks provide a basic validation of network configuration and virtual machine readiness.
 
-## 6. Troubleshooting
+## 6. Problems Encountered and Troubleshooting
 
-### Issue: Kali Linux Network Connectivity Failure
+### Problem: Kali Linux Network Connectivity Failure
 
-Following the initial deployment, Kali Linux did not receive the expected network configuration and could not communicate with the default gateway.
+After importing Kali Linux and connecting it to the custom NAT Network, the virtual machine did not initially receive the expected network configuration.
 
-**Diagnostic process:**
+As a result, communication with the default gateway and internet connectivity were unavailable.
 
-Used the following commands to investigate the problem:
+**Diagnosis**
 
-- `ip a`
-- `ping -c 4 10.0.0.1`
+Used the following commands to investigate the issue:
 
-**Resolution:**
+```bash
+ip a
+ping -c 4 10.0.0.1
+```
 
-1. Verified that the VirtualBox network adapter was attached to the correct NAT Network.
-2. Opened the Kali Linux network connection settings.
-3. Selected the Wired connection.
-4. Changed the IPv4 configuration from Automatic (DHCP) to Manual.
-5. Applied the static IP address, subnet mask, gateway, and DNS configuration.
+The network interface did not have the expected laboratory IP configuration, and communication with the gateway failed.
 
-This resolved the network configuration issue and established the intended addressing scheme.
+**Solution**
+
+1. Checked VirtualBox Settings → Network.
+2. Confirmed that Adapter 1 was attached to the correct NAT Network.
+3. Opened the Kali Linux network connection settings.
+4. Selected Wired connection 1.
+5. Opened IPv4 Settings.
+6. Changed the configuration method from Automatic (DHCP) to Manual.
+7. Configured the required IP address, subnet mask, gateway and DNS server.
+
+After applying the configuration, connectivity was tested again.
 
 ## 7. Technical Knowledge Acquired
 
-Throughout this project, I developed practical knowledge in several areas:
+### Virtualization
+- Deploying and managing virtual machines.
+- Understanding hypervisor configuration.
+- Using snapshots for environment recovery.
 
-**Virtualization**
-- Understanding virtual machines and hypervisor configuration.
-- Deploying and managing virtual operating systems.
-- Using snapshots for recovery and environment management.
+### Networking
+- Understanding NAT and NAT Network configurations.
+- Configuring IPv4 addresses and subnet masks.
+- Working with gateways and DNS.
+- Troubleshooting network connectivity.
 
-**Networking**
-- Understanding the difference between NAT and NAT Network.
-- Configuring private IPv4 networks.
-- Working with subnet masks, gateways, and DNS.
-- Troubleshooting virtual network connectivity.
+### Linux Administration
+- Managing network interfaces.
+- Configuring static IP addressing.
+- Using command-line networking utilities.
 
-**Linux Administration**
-- Configuring network interfaces.
-- Using terminal commands for network diagnostics.
-- Understanding basic Linux network management.
+### Cybersecurity Lab Management
+- Building controlled testing environments.
+- Preparing infrastructure for security exercises.
+- Understanding the importance of authorized testing and isolation.
 
-**Cybersecurity Lab Management**
-- Preparing controlled environments for security experimentation.
-- Understanding the importance of network isolation.
-- Establishing a reproducible testing environment.
+## 8. Future Improvements
 
-**Technical Documentation**
-- Documenting infrastructure configurations.
-- Recording troubleshooting procedures.
-- Maintaining a reproducible laboratory setup.
+This initial laboratory configuration provides a foundation for future practical exercises.
 
+Planned improvements include:
 
-## 8. Conclusion
+- Integrating additional virtual machines.
+- Adding vulnerable target environments.
+- Practicing network reconnaissance and security assessment within the laboratory.
+- Exploring packet analysis and network monitoring.
+- Documenting future security exercises and findings.
 
-This project established the infrastructure required for a practical cybersecurity learning environment.
+## 9. Tools and Resources
 
-Beyond installing and configuring Kali Linux, it provided hands-on experience with virtualization, network architecture, Linux administration, IP configuration, and troubleshooting.
+- **7-Zip:** https://www.7-zip.org/
+- **Oracle VirtualBox:** https://www.virtualbox.org/
+- **Kali Linux:** https://www.kali.org/
 
-The laboratory will serve as a foundation for progressively more advanced cybersecurity exercises and practical security projects.
+## 10. Conclusion
+
+This project established the foundation of a virtual cybersecurity laboratory using VirtualBox and Kali Linux.
+
+Through this implementation, I gained practical experience with virtualization, network configuration, Linux administration, and troubleshooting.
+
+The laboratory will serve as a starting point for future cybersecurity exercises and the development of practical technical skills.
+
+---
+
+**Project:** Week 1 – Project Module 1  
+**Program:** Networkwalks Cybersecurity Program  
+**Author:** Mohamed ZOUARI  
