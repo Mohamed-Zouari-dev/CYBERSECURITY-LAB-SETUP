@@ -2,254 +2,84 @@
 <img width="1917" height="997" alt="image" src="https://github.com/user-attachments/assets/62749751-9f53-472b-adef-44ab6e943a8a" />
 <img width="1031" height="858" alt="image" src="https://github.com/user-attachments/assets/039f99fd-db9c-42b9-8524-0964f1783ce9" />
 
-# Cybersecurity Lab Environment Setup
+# Networkwalks – Cybersecurity Training
 
-A practical cybersecurity lab built with Oracle VirtualBox, Kali Linux, and Windows 10. The project focuses on creating an isolated virtual network, configuring communication between virtual machines, and learning network traffic analysis with Wireshark.
+This repository documents my progress through the Networkwalks cybersecurity training program. It contains an overview of the lab environments I configured, the practical exercises I completed, and the skills I developed.
 
-## Project Objectives
+The purpose of this repository is to document my learning journey rather than publish exercise answers or solutions.
 
-- Build a virtual cybersecurity lab using VirtualBox.
-- Configure a NAT Network shared by multiple virtual machines.
-- Establish communication between Kali Linux and Windows 10.
-- Verify connectivity between virtual machines and internet access.
-- Analyze network traffic using Wireshark.
-- Understand how HTTP communicates and why unencrypted authentication is a security risk.
+## 1. Lab Environment Setup
 
-## Lab Environment
+### Virtualization and Network Configuration
 
-| Component | Configuration |
-|---|---|
-| Virtualization | Oracle VirtualBox |
-| Network type | NAT Network |
-| Network subnet | `10.0.0.0/24` |
-| Kali Linux | `10.0.0.2/24` |
-| Windows 10 | `10.0.0.10/24` |
-| Default gateway | `10.0.0.1` |
-| DNS | `8.8.8.8` |
+Set up a virtual lab environment using Oracle VirtualBox.
 
-*The Windows 10 configuration is the additional lab extension described in the project guide.*
+Completed tasks:
+- Installed and configured Kali Linux.
+- Created and configured a NAT Network for the lab environment.
+- Configured network connectivity and internet access.
+- Enabled clipboard and drag-and-drop integration.
+- Configured a shared folder between the host and virtual machine.
+- Created a VM snapshot as a recovery point.
 
----
+### Windows 10 Virtual Machine
 
-## Part 1 — Kali Linux Virtual Machine
+Completed the additional Windows 10 VM setup.
 
-The initial lab consists of installing Kali Linux in VirtualBox and connecting it to a dedicated NAT Network.
+What I practiced:
+- Creating and configuring a Windows virtual machine.
+- Allocating virtual hardware resources and storage.
+- Connecting multiple virtual machines to the same virtual network.
+- Verifying connectivity between Windows and Kali Linux.
+- Understanding communication between different operating systems in an isolated lab.
 
-Main configuration tasks:
+## 2. Wireshark – SOC Analyst Practical Labs
 
-1. Install Oracle VirtualBox.
-2. Create a NAT Network with the required subnet.
-3. Import and configure the Kali Linux virtual machine.
-4. Configure the Kali network interface.
-5. Verify network connectivity and internet access.
-6. Create a clean VM snapshot.
+Completed the first three practical labs from the Wireshark SOC Project module.
 
-**Kali Linux network configuration**
+### Lab 1 – Identifying an Attacker's IP
 
-- Network: VirtualBox NAT Network
-- IP address: `10.0.0.2/24`
-- Gateway: `10.0.0.1`
-- DNS: `8.8.8.8`
+**What I learned:**
+- Inspecting packet captures to understand network activity.
+- Using Wireshark filters to narrow down traffic.
+- Examining communication patterns to identify potentially suspicious hosts.
+- Understanding how network traffic analysis supports security investigations.
 
-## Part 2 — Windows 10 Lab Extension
+### Lab 2 – Following TCP Stream 1
 
-The second lab extends the environment by introducing a Windows 10 virtual machine connected to the same NAT Network as Kali Linux.
+**What I learned:**
+- Understanding TCP conversations.
+- Reconstructing communication between network endpoints.
+- Using the Follow TCP Stream feature.
+- Examining application-level data exchanged over a TCP connection.
 
-### Requirements
+### Lab 3 – Following TCP Stream, Part 2
 
-- VirtualBox already installed.
-- At least 40 GB of available disk space.
-- At least 4 GB of RAM available for the VM.
-- Kali Linux already configured on the NAT Network.
+**What I learned:**
+- Further analyzing TCP communication sessions.
+- Correlating packets that belong to the same conversation.
+- Interpreting reconstructed network exchanges.
+- Developing a more structured approach to investigating packet captures.
 
-### VM configuration
 
-| Setting | Value |
-|---|---|
-| VM name | `Windows10-Lab` |
-| Operating system | Windows 10 (64-bit) |
-| Memory | 4096 MB |
-| Virtual disk | VDI, dynamically allocated |
-| Disk capacity | At least 40 GB |
-| Network adapter | NAT Network |
-| Network | Same NAT Network as Kali |
+## 3. Skills Practiced
 
-### Network configuration
+- Virtualization with Oracle VirtualBox
+- Linux and Windows virtual machine administration
+- Virtual network configuration
+- Network troubleshooting
+- Wireshark packet analysis
+- TCP/IP traffic inspection
+- TCP stream reconstruction
+- Introductory SOC investigation techniques
 
-Configure the Windows 10 network adapter with:
+## 4. Scope and Responsible Practice
 
-- IP address: `10.0.0.10`
-- Subnet mask: `255.255.255.0`
-- Default gateway: `10.0.0.1`
-- Preferred DNS: `8.8.8.8`
+All exercises documented here were conducted as part of the training environment. Practical security testing should only be performed on systems you own or have explicit permission to assess.
 
-### Connectivity verification
-
-From Windows Command Prompt:
-
-```cmd
-ping 10.0.0.2
-ping 8.8.8.8
-```
-
-From Kali Linux:
-
-```bash
-ping 10.0.0.10
-```
-
-These tests are intended to verify communication between the two virtual machines and internet connectivity.
+This repository focuses on documenting the learning process and practical experience. It does not publish lab answers, credentials, or exercise solutions.
 
 ---
 
-## Part 3 — Lab 1: Wireshark Traffic Analysis
-
-This exercise focuses on inspecting captured TCP traffic and identifying the details of an HTTP login exchange.
-
-### 1. Finding the relevant TCP stream
-
-Start by applying the following Wireshark display filter:
-
-```text
-tcp
-```
-
-Select the first packet, right-click it, and choose:
-
-`Follow → TCP Stream`
-
-Navigate through the available streams using the arrows in the Follow TCP Stream window.
-
-The relevant stream is **Stream 2**, which contains a staff portal login page.
-
-The other streams contain normal page traffic.
-
-### 2. Identifying the login protocol
-
-Apply:
-
-```text
-tcp.stream eq 2
-```
-
-The login request uses **HTTP**.
-
-This means the login exchange is transmitted without HTTPS transport encryption.
-
-### 3. HTTP version
-
-The login request begins with:
-
-```http
-POST /login HTTP/1.1
-```
-
-Identified version: **HTTP/1.1**
-
-### 4. Browser identification
-
-The request contains a User-Agent header identifying:
-
-- Browser: Google Chrome
-- Platform: Windows 10 (64-bit)
-
-### 5. Hostname
-
-The HTTP Host header identifies the destination as:
-
-```text
-portal.company.local
-```
-
-### 6. Web server identification
-
-The server response contains:
-
-```text
-Server: Apache/2.4.57 (Ubuntu)
-```
-
-Identified web server: **Apache**
-
-### 7. HTTP request method
-
-The login submission uses:
-
-```http
-POST /login
-```
-
-Identified method: **POST**
-
-The login page itself was initially requested using GET.
-
-### 8. Number of login attempts
-
-Apply this Wireshark filter:
-
-```text
-http.request.method == "POST"
-```
-
-Two matching POST requests are present in the exercise capture.
-
-Identified login attempts: **2**
-
-### 9. Authentication analysis
-
-Both requests use the same username.
-
-The first authentication attempt receives an unsuccessful login response. The second receives a successful response.
-
-**Security note:** The captured authentication values are intentionally omitted from this public report. The important finding is that the credentials were visible in the HTTP traffic because the authentication exchange was not protected by HTTPS.
-
-### 10. Main security observation
-
-The capture demonstrates the risk of transmitting authentication data over unencrypted HTTP.
-
-An observer with access to the relevant network traffic could inspect the HTTP request and response contents.
-
-**Recommended security improvements:**
-
-- Enforce HTTPS for authentication pages.
-- Redirect HTTP requests to HTTPS.
-- Use valid TLS certificates.
-- Enable HSTS where appropriate.
-- Avoid transmitting sensitive authentication data over unencrypted connections.
-
----
-
-## Tools Used
-
-- Oracle VirtualBox
-- Kali Linux
-- Windows 10
-- Wireshark
-- TCP/IP networking
-- HTTP protocol analysis
-
-## Learning Outcomes
-
-Through these exercises, the project covers:
-
-- Virtual machine deployment and configuration.
-- NAT Network configuration.
-- Static IPv4 addressing.
-- Communication between different operating systems.
-- Basic connectivity troubleshooting.
-- TCP stream inspection.
-- HTTP request and response analysis.
-- Identification of browser and web server information.
-- Understanding the security implications of unencrypted authentication.
-
-## Future Improvements
-
-- Add more virtual machines to expand the lab.
-- Introduce additional network services.
-- Practice packet analysis with different protocols.
-- Explore network monitoring and detection.
-- Document further security exercises in the isolated lab environment.
-
-## Disclaimer
-
-This project is intended for educational purposes and authorized cybersecurity practice only. All testing and analysis should be performed on systems you own or have explicit permission to assess.
+**Training:** Networkwalks Cybersecurity Training  
+**Focus:** Lab Environment Setup, Network Analysis, and SOC Fundamentals
